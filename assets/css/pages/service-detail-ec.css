@@ -1,0 +1,83 @@
+/* =========================================================
+   EC detail page: only differences from service-detail.css
+   ========================================================= */
+
+.service-detail-concerns-grid--ec {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Charts row (Before/After) */
+.service-detail-charts-row--ec {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 3rem;
+  margin: 3rem 0;
+  flex-wrap: wrap;
+}
+
+.service-detail-chart-box {
+  flex: 1;
+  min-width: 280px;
+  max-width: 350px;
+  text-align: center;
+}
+
+.service-detail-chart-title {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  color: var(--c-text-sub);
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  height: 2em;
+}
+
+.service-detail-chart-title--accent {
+  color: var(--c-indigo);
+  font-weight: 700;
+}
+
+.service-detail-chart-canvas-wrap {
+  position: relative;
+  height: 250px;
+  width: 250px;
+  margin: 0 auto;
+}
+
+.service-detail-chart-note {
+  font-size: 0.8rem;
+  color: #999;
+  margin-top: 1rem;
+}
+
+.service-detail-chart-note--accent {
+  color: var(--c-indigo);
+  font-weight: 700;
+}
+
+.service-detail-arrow-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 5rem;
+  color: var(--c-gold);
+}
+
+.service-detail-arrow-icon {
+  width: 40px;
+  height: 40px;
+  transition: transform 0.3s ease;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .service-detail-charts-row--ec {
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+  }
+  .service-detail-arrow-icon {
+    transform: rotate(90deg);
+  }
+}

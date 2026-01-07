@@ -1,0 +1,26 @@
+/* =========================================================
+   HP detail page: only differences from service-detail.css
+   ========================================================= */
+
+/* Concerns: HP is 3 cards (ads is 4). Keep a nicer balance. */
+.service-detail-concerns-grid--hp {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Philosophy steps color scheme differs from Ads */
+.service-detail-hp-step1 {
+  background: var(--c-indigo);
+  color: #fff;
+  z-index: 3;
+}
+.service-detail-hp-step2 {
+  background: #fff;
+  border: 2px solid var(--c-indigo);
+  color: var(--c-indigo);
+  z-index: 2;
+}
+.service-detail-hp-step3 {
+  background: var(--c-gold);
+  color: #fff;
+  z-index: 1;
+}

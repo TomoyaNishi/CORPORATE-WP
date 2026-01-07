@@ -63,7 +63,7 @@ add_action('wp_enqueue_scripts', function () {
     );
   }
 
-   // Service service.css
+  // Service service.css
   if (is_page_template('page-service.php')) {
     $service_rel  = '/assets/css/pages/service.css';
     $service_path = get_theme_file_path($service_rel);
@@ -76,18 +76,57 @@ add_action('wp_enqueue_scripts', function () {
     );
   }
 
-// Service detail (Ads)
-if (is_page_template('page-ads.php') || is_page_template('page-hp.php') || is_page_template('page-seo.php') || is_page_template('page-video.php') || is_page_template('page-ec.php')) {
-  $detail_rel  = '/assets/css/pages/service-detail.css';
-  $detail_path = get_theme_file_path($detail_rel);
-
-  wp_enqueue_style(
-    'nous-service-detail',
-    get_theme_file_uri($detail_rel),
-    ['nous-main'],
-    file_exists($detail_path) ? filemtime($detail_path) : null
+  /**
+   * Service detail pages
+   * - 共通: service-detail.css
+   * - 個別: service-detail-xxx.css をテンプレ別に追加
+   */
+  $is_detail = (
+    is_page_template('page-ads.php') ||
+    is_page_template('page-hp.php') ||
+    is_page_template('page-seo.php') ||
+    is_page_template('page-video.php') ||
+    is_page_template('page-ec.php')
   );
-}
+
+  if ($is_detail) {
+    // 共通（必須）
+    $detail_rel  = '/assets/css/pages/service-detail.css';
+    $detail_path = get_theme_file_path($detail_rel);
+
+    wp_enqueue_style(
+      'nous-service-detail',
+      get_theme_file_uri($detail_rel),
+      ['nous-main'],
+      file_exists($detail_path) ? filemtime($detail_path) : null
+    );
+
+    // 個別（必要なページだけ読み込む）
+    $page_specific_map = [
+      'page-hp.php'    => 'service-detail-hp.css',
+      'page-seo.php'   => 'service-detail-seo.css',
+      'page-video.php' => 'service-detail-video.css',
+      'page-ec.php'    => 'service-detail-ec.css',
+      // 'page-ads.php' => 'service-detail-ads.css', // もし作るならここを有効化
+    ];
+
+    foreach ($page_specific_map as $tpl => $css_file) {
+      if (is_page_template($tpl)) {
+        $rel  = '/assets/css/pages/' . $css_file;
+        $path = get_theme_file_path($rel);
+
+        // ハンドル名を一意に（nous-service-detail-hp 等）
+        $handle_suffix = str_replace(['service-detail-', '.css'], '', $css_file);
+
+        wp_enqueue_style(
+          'nous-service-detail-' . $handle_suffix,
+          get_theme_file_uri($rel),
+          ['nous-service-detail'], // 共通の後に適用されるよう依存関係を指定
+          file_exists($path) ? filemtime($path) : null
+        );
+      }
+    }
+  }
 
 }, 20);
 

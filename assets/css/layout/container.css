@@ -1,0 +1,18 @@
+.container {
+  width: 88%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mb-lg {
+  margin-bottom: 80px;
+}
+.mb-md {
+  margin-bottom: 40px;
+}

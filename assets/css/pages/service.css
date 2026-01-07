@@ -1,0 +1,251 @@
+/* ==========================================================================
+   Service Page Only (prefixed with service-)
+   ========================================================================== */
+
+/* FV / Visual */
+.service-visual {
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+  color: #fff;
+}
+
+.service-visual-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.service-visual-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.service-visual-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.service-visual-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 20px;
+}
+
+.service-page-title {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  color: #fff;
+  letter-spacing: 0.1em;
+}
+
+.service-page-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.2em;
+  margin-bottom: 0.6rem;
+}
+
+.service-visual-lead {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.service-fv-back-link {
+  position: absolute;
+  top: 30px;
+  left: 5%;
+  z-index: 10;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  font-family: var(--font-sans);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.service-fv-back-link:hover {
+  color: #fff;
+}
+
+/* Concept */
+.service-concept {
+  background: #fff;
+  padding: 80px 40px;
+  margin-top: -80px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.service-concept-text {
+  font-size: 1.1rem;
+  line-height: 2.4;
+}
+
+/* Service List */
+.service-list {
+  margin-top: 40px;
+}
+
+.service-block {
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+  margin-bottom: 120px;
+}
+
+/* Alternating layout */
+.service-block:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.service-info {
+  flex: 1;
+}
+
+.service-media {
+  flex: 1;
+  position: relative;
+}
+
+.service-media img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  filter: sepia(10%) contrast(90%);
+}
+
+/* Decorative frame */
+.service-media::after {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--c-gold);
+  z-index: -1;
+}
+
+.service-block:nth-child(even) .service-media::after {
+  top: 20px;
+  right: 20px;
+  left: auto;
+}
+
+.service-num {
+  font-family: var(--font-sans);
+  color: var(--c-gold);
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.service-name {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 1rem;
+  display: inline-block;
+}
+
+.service-lead {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--c-indigo);
+}
+
+.service-detail {
+  color: var(--c-text-sub);
+  margin-bottom: 2rem;
+  text-align: justify;
+}
+
+.service-points {
+  list-style: none;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 1.5rem;
+  border-left: 3px solid var(--c-text-ink);
+}
+
+.service-points li {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.service-points li::before {
+  content: "・";
+  margin-right: 0.5rem;
+  color: var(--c-vermilion);
+  font-weight: 700;
+}
+
+/* Button (Service specific) */
+.service-link-btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.8rem 2.5rem;
+  border: 1px solid var(--c-text-ink);
+  color: var(--c-text-ink);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+.service-link-btn:hover {
+  background: var(--c-indigo);
+  color: #fff;
+  border-color: var(--c-indigo);
+}
+
+/* CTA */
+.service-cta {
+  text-align: center;
+  background: #fff;
+  padding: 6rem 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .service-block,
+  .service-block:nth-child(even) {
+    flex-direction: column-reverse;
+    gap: 2rem;
+    margin-bottom: 80px;
+  }
+
+  .service-media img {
+    height: 250px;
+  }
+
+  .service-media::after {
+    display: none;
+  }
+
+  .service-page-title {
+    font-size: 2.2rem;
+  }
+
+  .service-concept {
+    padding: 40px 20px;
+    margin-top: -40px;
+    width: 90%;
+  }
+}

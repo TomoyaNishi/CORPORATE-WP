@@ -1,0 +1,11 @@
+/* JSで is-visible を付与して出す */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fade-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}

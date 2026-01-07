@@ -165,14 +165,8 @@ get_header();
   </section>
 
   <!-- CTA -->
-  <div class="about-cta-section fade-up">
-    <h2 class="mb-md">まずは、状況を聞かせてください</h2>
-    <p>
-      施策の話は、状況を整理した後で大丈夫です。<br>
-      まずは壁打ち相手として、お使いください。
-    </p>
-    <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="btn-main">無料で相談する</a>
-  </div>
+  <?php get_template_part('components/cta-consult'); ?>
+
 
 </main>
 

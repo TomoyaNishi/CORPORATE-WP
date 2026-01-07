@@ -36,7 +36,7 @@ add_action('wp_enqueue_scripts', function () {
     [],
     file_exists($main_path) ? filemtime($main_path) : null
   );
-  
+
     // Header (common)
   $hcss_rel  = '/assets/css/components/header.css';
   $hcss_path = get_theme_file_path($hcss_rel);
@@ -150,6 +150,40 @@ add_action('wp_enqueue_scripts', function () {
       }
     }
   }
+
+    // Works / Case Study
+  if (is_page_template('page-works.php')) {
+    $works_rel  = '/assets/css/pages/works.css';
+    $works_path = get_theme_file_path($works_rel);
+
+    wp_enqueue_style(
+      'nous-works',
+      get_theme_file_uri($works_rel),
+      ['nous-main'],
+      file_exists($works_path) ? filemtime($works_path) : null
+    );
+
+    $works_js_rel  = '/assets/js/works.js';
+    $works_js_path = get_theme_file_path($works_js_rel);
+
+    wp_enqueue_script(
+      'nous-works',
+      get_theme_file_uri($works_js_rel),
+      [],
+      file_exists($works_js_path) ? filemtime($works_js_path) : null,
+      true
+    );
+  }
+
+  $cta_rel  = '/assets/css/components/cta-consult.css';
+  $cta_path = get_theme_file_path($cta_rel);
+
+  wp_enqueue_style(
+    'nous-cta-consult',
+    get_theme_file_uri($cta_rel),
+    ['nous-main'],
+    file_exists($cta_path) ? filemtime($cta_path) : null
+  );
 
 }, 20);
 

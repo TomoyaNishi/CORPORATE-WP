@@ -250,24 +250,7 @@ get_header();
   </section>
 
   <!-- 6. CTA -->
-  <section class="section container">
-    <div class="home-cta fade-up">
-      <div class="home-cta__bg"></div>
-
-      <div class="home-cta__content">
-        <h2 class="mb-md">まずは、整理から。</h2>
-        <p class="text-lg">
-          何をやるべきか分からない。<br>
-          それを一人で抱え込む必要はありません。<br>
-          状況を伺った上で、<span class="text-accent">正直にお伝えします。</span>
-        </p>
-
-        <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="btn-main">無料で相談する</a>
-
-        <p class="home-cta__note">※ ご相談は、ご依頼ではありません。</p>
-      </div>
-    </div>
-  </section>
+  <?php get_template_part('components/cta-consult'); ?>
 
 </main>
 

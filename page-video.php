@@ -10,8 +10,6 @@ get_header();
 
   <!-- FV -->
   <div class="service-detail-hero fade-up">
-    <a href="<?php echo esc_url(home_url('/service/')); ?>" class="service-detail-back-link">← サービス一覧へ戻る</a>
-
     <div class="service-detail-hero-bg">
       <img
         src="https://images.unsplash.com/photo-1574375927938-d5a98e8efe85?q=80&w=2069&auto=format&fit=crop"
@@ -330,15 +328,7 @@ get_header();
   </section>
 
   <!-- CTA -->
-  <div class="service-detail-cta fade-up">
-    <h2 class="mb-md">まずは、作る目的の整理から</h2>
-    <p>
-      なぜ映像が必要なのか。<br>
-      そこから一緒に考えましょう。
-    </p>
-    <p class="service-detail-cta-note">※ 相談 ＝ 依頼ではありません。</p>
-    <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="btn-main">無料で相談する</a>
-  </div>
+  <?php get_template_part('components/cta-consult'); ?>
 
 </main>
 

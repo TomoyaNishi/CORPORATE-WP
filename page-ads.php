@@ -10,8 +10,6 @@ get_header();
 
   <!-- FV -->
   <div class="service-detail-hero fade-up">
-    <a href="<?php echo esc_url(home_url('/service/')); ?>" class="service-detail-back-link">← サービス一覧へ戻る</a>
-
     <div class="service-detail-hero-bg">
       <img
         src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop"
@@ -380,15 +378,8 @@ get_header();
   </section>
 
   <!-- CTA -->
-  <div class="service-detail-cta fade-up">
-    <h2 class="mb-md">まずは、整理するところから</h2>
-    <p>
-      広告をやるかどうかも含めて、<br>
-      正直にお話しします。
-    </p>
-    <p class="service-detail-cta-note">※ 相談 ＝ 依頼ではありません。</p>
-    <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="btn-main">無料で相談する</a>
-  </div>
+  <?php get_template_part('components/cta-consult'); ?>
+
 
 </main>
 

@@ -36,6 +36,29 @@ add_action('wp_enqueue_scripts', function () {
     [],
     file_exists($main_path) ? filemtime($main_path) : null
   );
+  
+    // Header (common)
+  $hcss_rel  = '/assets/css/components/header.css';
+  $hcss_path = get_theme_file_path($hcss_rel);
+
+  wp_enqueue_style(
+    'nous-header',
+    get_theme_file_uri($hcss_rel),
+    ['nous-main'],
+    file_exists($hcss_path) ? filemtime($hcss_path) : null
+  );
+
+  $hjs_rel  = '/assets/js/header.js';
+  $hjs_path = get_theme_file_path($hjs_rel);
+
+  wp_enqueue_script(
+    'nous-header',
+    get_theme_file_uri($hjs_rel),
+    [],
+    file_exists($hjs_path) ? filemtime($hjs_path) : null,
+    true
+  );
+
 
   // TOP（フロントページ）だけ home.css
   if (is_front_page()) {

@@ -245,6 +245,53 @@ await writeFile(
   'utf8'
 );
 
+/* ── 配信ツールに読ませる CSV ──
+ * 送信そのものは配信サービス側に任せる（到達率・バウンス処理・配信停止の
+ * 反映は、自前で書くより専用サービスのほうが確実なため）。
+ */
+const csvCell = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+
+const sorted = [...results].sort((a, b) => a.diag.score - b.diag.score);
+const missingEmail = sorted.filter((r) => !r.p.email);
+
+const header = [
+  'email', 'name', 'industry', 'score', 'findings',
+  'subject', 'body', 'demo_url', 'report_url', 'current_url',
+];
+
+const csv =
+  header.join(',') +
+  '\n' +
+  sorted
+    .filter((r) => r.p.email)
+    .map(({ p, diag, urls }) =>
+      [
+        p.email,
+        p.name,
+        p.industry,
+        diag.score,
+        (diag.findings || []).map((f) => f.key).join(' '),
+        'ホームページ、5ページ15万円・1週間で作ります',
+        buildEmail(p, diag, urls).split('\n').slice(6).join('\n').trim(),
+        urls.demo,
+        urls.report,
+        p.url || '',
+      ]
+        .map(csvCell)
+        .join(',')
+    )
+    .join('\n');
+
+await writeFile('out/queue.csv', '﻿' + csv, 'utf8'); // BOM付き（Excel対策）
+
 console.log(`\n✓ ${OUT}/ に生成しました`);
-console.log(`✓ out/emails.md にメール下書き ${results.length}通`);
+console.log(`✓ out/emails.md  メール下書き ${results.length}通（目視確認用）`);
+console.log(`✓ out/queue.csv  配信ツール取り込み用 ${sorted.length - missingEmail.length}件`);
+if (missingEmail.length) {
+  console.log(
+    `\n⚠ email 未記入のため CSV から除外: ${missingEmail.length}件` +
+      `\n   ${missingEmail.map((r) => r.p.name).join(', ')}`
+  );
+}
 console.log(`\n確認:  npx serve ${OUT}   または  python3 -m http.server -d ${OUT} 8000`);
+console.log(`送信前:  node tools/preflight.mjs <送信ドメイン>`);

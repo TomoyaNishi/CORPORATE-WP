@@ -46,6 +46,7 @@ export async function diagnose(url) {
     ms: 0,
     score: 0,
     findings: [],
+    positives: [],
     error: null,
   };
 
@@ -195,7 +196,20 @@ export async function diagnose(url) {
   if (r.images.length === 0)
     f.push({ key: 'images', level: 'info', label: '写真がほとんど使われていません' });
 
-  // --- スコア（100点満点。低いほど改善余地が大きい） ---
+  // --- できている点。相手に見せるレポートは、ここから始める ---
+  const pos = r.positives;
+  if (r.https) pos.push('SSL（https）に対応しています');
+  if (r.viewport) pos.push('スマートフォン表示に対応しています');
+  if (r.form) pos.push('お問い合わせフォームが設置されています');
+  if (r.copyrightYear && thisYear - r.copyrightYear <= 1)
+    pos.push('サイトが新しい状態に保たれています');
+  if (r.images.length >= 4) pos.push(`お写真が${r.images.length}点以上使われています`);
+  if (r.ms < 1500) pos.push('表示が速く、待たされません');
+  if (r.description) pos.push('検索結果に出る説明文が設定されています');
+  if (r.title) pos.push('ページのタイトルが設定されています');
+
+  // --- スコア（100点満点。低いほど改善余地が大きい）
+  //     これは社内で優先順位をつけるための数字。相手には見せない ---
   let s = 100;
   for (const x of f) s -= x.level === 'critical' ? 25 : x.level === 'warn' ? 12 : 5;
   r.score = Math.max(0, s);

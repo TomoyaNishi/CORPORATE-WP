@@ -346,7 +346,8 @@ export function renderReport(p, diag, opts = {}) {
   const expiry = opts.expiry || '';
   const demoPath = opts.demoPath || './';
 
-  const levelLabel = { critical: '要改善', warn: '確認', info: '参考' };
+  // 相手に読ませる言葉。点数や「要改善」のような採点語は使わない
+  const levelLabel = { critical: '影響大', warn: '気になる', info: '参考' };
   const levelColor = { critical: '#b64826', warn: '#a8752a', info: '#5f5c55' };
 
   const findings = (diag.findings || [])
@@ -362,35 +363,24 @@ export function renderReport(p, diag, opts = {}) {
     )
     .join('');
 
-  const checks = [
-    ['スマートフォン表示（viewport）', diag.viewport],
-    ['SSL（https）', diag.https],
-    ['お問い合わせフォーム', diag.form],
-    ['検索結果の説明文', !!diag.description],
-  ]
-    .map(
-      ([k, ok]) =>
-        `<div class="chk"><span class="chk__k">${esc(k)}</span><span class="chk__v ${ok ? 'ok' : 'ng'}">${ok ? '対応済み' : '未対応'}</span></div>`
-    )
-    .join('');
-
   return `<!doctype html>
 <html lang="ja">
 <head>
 ${head(`${p.name} 様｜サイト診断`, t, expiry)}
 <style>
-  .score{display:flex;align-items:baseline;gap:.6rem;margin:1.5rem 0 .5rem}
-  .score__n{font-family:var(--display);font-size:3.4rem;line-height:1;font-variant-numeric:tabular-nums}
-  .score__d{font-size:.9rem;color:var(--faint)}
   .f{display:grid;grid-template-columns:4.5rem 1fr;gap:1rem;padding:1.1rem 0;border-bottom:1px solid var(--rule)}
   .f__tag{font-size:.7rem;border:1px solid;padding:.15rem .4rem;height:fit-content;text-align:center;letter-spacing:.06em}
   .f__label{font-weight:700;font-size:.98rem}
   .f__detail{font-size:.88rem;color:var(--sub);margin-top:.2rem}
-  .chk{display:flex;justify-content:space-between;gap:1rem;padding:.75rem 0;border-bottom:1px solid var(--rule);font-size:.9rem}
-  .chk__k{color:var(--sub)}
-  .chk__v{font-weight:700;white-space:nowrap}
-  .chk__v.ok{color:var(--accent)}
-  .chk__v.ng{color:#b64826}
+  .pos{margin-top:1rem}
+  .pos__row{
+    padding:.6rem 0 .6rem 1.6rem;border-bottom:1px solid var(--rule);
+    font-size:.92rem;position:relative;color:var(--sub);
+  }
+  .pos__row:last-child{border-bottom:none}
+  .pos__row::before{
+    content:"✓";position:absolute;left:0;color:var(--accent);font-weight:700;
+  }
   .plan{background:var(--surface);border:1px solid var(--rule);padding:1.5rem;margin-top:2rem}
   .plan__price{font-family:var(--display);font-size:2rem;letter-spacing:.02em;line-height:1.3}
   .plan__dur{font-size:.88rem;color:var(--sub);margin-top:.4rem}
@@ -404,36 +394,39 @@ ${head(`${p.name} 様｜サイト診断`, t, expiry)}
 <section>
   <div class="wrap">
     <p class="kicker">DIAGNOSIS</p>
-    <h2>${esc(p.name)} 様の<br>現在のホームページについて</h2>
+    <h2>${esc(p.name)} 様の<br>ホームページを拝見しました</h2>
     <p class="lead">${
       diag.url
         ? `<a href="${esc(diag.url)}" target="_blank" rel="noopener noreferrer">${esc(diag.url)}</a> を拝見しました。`
         : 'ホームページが見つかりませんでした。'
     }</p>
 
-    <div class="score">
-      <span class="score__n">${diag.score}</span>
-      <span class="score__d">/ 100 点（機械判定）</span>
-    </div>
     <p style="font-size:.85rem;color:var(--faint)">
-      表示速度 ${(diag.ms / 1000).toFixed(1)} 秒 ／ ページ容量 ${(diag.bytes / 1024).toFixed(0)} KB
+      表示までの時間 ${(diag.ms / 1000).toFixed(1)} 秒 ／ ページ容量 ${(diag.bytes / 1024).toFixed(0)} KB
     </p>
   </div>
 </section>
 
-<section style="padding-top:0">
+${
+  (diag.positives || []).length
+    ? `<section style="padding-top:0">
   <div class="wrap">
-    <p class="kicker">CHECK</p>
-    <h2>基本項目</h2>
-    ${checks}
+    <p class="kicker">GOOD</p>
+    <h2>すでにできていること</h2>
+    <div class="pos">
+      ${diag.positives.map((t) => `<div class="pos__row">${esc(t)}</div>`).join('')}
+    </div>
   </div>
-</section>
+</section>`
+    : ''
+}
+
 
 <section style="padding-top:0">
   <div class="wrap">
-    <p class="kicker">FINDINGS</p>
-    <h2>気になった点</h2>
-    ${findings || '<p class="lead">大きな問題は見つかりませんでした。</p>'}
+    <p class="kicker">POINTS</p>
+    <h2>拝見して、気になったところ</h2>
+    ${findings || '<p class="lead">機械的に見る限り、大きな問題は見つかりませんでした。よく整備されています。</p>'}
 
     <div class="plan">
       <p class="kicker" style="margin-bottom:.4rem">ご提案</p>

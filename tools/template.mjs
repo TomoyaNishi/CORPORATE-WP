@@ -183,6 +183,9 @@ footer strong{color:var(--sub)}
 /* ── デモサイト本体 ───────────────────────────── */
 export function renderDemo(p, diag, opts = {}) {
   const t = theme(p.industry);
+  const S = opts.sender || {};
+  const COMPANY = S.company || '当社';
+  const CONTACT = S.email || '';
   const expiry = opts.expiry || '';
   const imgs = (diag && diag.images) || [];
   const hero = imgs[0] || null;
@@ -242,7 +245,7 @@ ${head(`${p.name}｜ホームページ制作案`, t, expiry)}
 <body>
 
 <div class="notice">
-  これは <b>株式会社秀</b> が作成した提案用のサンプルです。${esc(p.name)} 様の公式サイトではありません。
+  これは <b>${esc(COMPANY)}</b> が作成した提案用のサンプルです。${esc(p.name)} 様の公式サイトではありません。
 </div>
 
 <header class="hero">
@@ -310,7 +313,7 @@ ${
     <div class="disclaimer">
       <p><strong>このページについて</strong></p>
       <p>
-        株式会社秀が、${esc(p.name)} 様へのご提案のために作成したサンプルページです。
+        ${esc(COMPANY)}が、${esc(p.name)} 様へのご提案のために作成したサンプルページです。
         ${esc(p.name)} 様の公式サイトではなく、検索エンジンには表示されません（noindex）。
       </p>
       <p style="margin-top:.8rem">
@@ -321,12 +324,12 @@ ${
       </p>
       <p style="margin-top:.8rem">
         掲載の停止をご希望の場合は
-        <a href="mailto:nishi@nous-creators.com">nishi@nous-creators.com</a>
+        <a href="mailto:${esc(CONTACT)}">${esc(CONTACT)}</a>
         までご連絡ください。即日削除いたします。
       </p>
       ${expiry ? `<p style="margin-top:.8rem"><strong>公開期限：${esc(expiry)}</strong>（期限を過ぎると自動的に削除されます）</p>` : ''}
     </div>
-    <p>株式会社秀</p>
+    <p>${esc(COMPANY)}</p>
   </div>
 </footer>
 
@@ -337,6 +340,9 @@ ${
 /* ── 診断レポート ─────────────────────────────── */
 export function renderReport(p, diag, opts = {}) {
   const t = theme(p.industry);
+  const S = opts.sender || {};
+  const COMPANY = S.company || '当社';
+  const CONTACT = S.email || '';
   const expiry = opts.expiry || '';
   const demoPath = opts.demoPath || './';
 
@@ -393,7 +399,7 @@ ${head(`${p.name} 様｜サイト診断`, t, expiry)}
 </head>
 <body>
 
-<div class="notice">株式会社秀 ｜ ${esc(p.name)} 様 サイト診断</div>
+<div class="notice">${esc(COMPANY)} ｜ ${esc(p.name)} 様 サイト診断</div>
 
 <section>
   <div class="wrap">
@@ -449,14 +455,14 @@ ${head(`${p.name} 様｜サイト診断`, t, expiry)}
   <div class="wrap">
     <div class="disclaimer">
       <p><strong>このページについて</strong></p>
-      <p>株式会社秀が作成した提案資料です。検索エンジンには表示されません（noindex）。</p>
+      <p>${esc(COMPANY)}が作成した提案資料です。検索エンジンには表示されません（noindex）。</p>
       <p style="margin-top:.8rem">
         診断は公開されているページを1回取得して機械的に判定したものです。
-        掲載の停止をご希望の場合は <a href="mailto:nishi@nous-creators.com">nishi@nous-creators.com</a> までご連絡ください。即日削除いたします。
+        掲載の停止をご希望の場合は <a href="mailto:${esc(CONTACT)}">${esc(CONTACT)}</a> までご連絡ください。即日削除いたします。
       </p>
       ${expiry ? `<p style="margin-top:.8rem"><strong>公開期限：${esc(expiry)}</strong></p>` : ''}
     </div>
-    <p>株式会社秀</p>
+    <p>${esc(COMPANY)}</p>
   </div>
 </footer>
 

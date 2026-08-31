@@ -9,7 +9,10 @@
  *   dist/index.html           自分用の一覧（送付管理）
  *   dist/robots.txt           全ページ noindex
  *   dist/_headers             Cloudflare Pages 用 X-Robots-Tag
- *   out/emails.md             URL 差し込み済みのメール下書き
+ *   out/emails.md             URL 差し込み済みのメール下書き（目視確認用）
+ *   out/queue.csv             配信ツール取り込み用
+ *
+ * 差出人（会社名・氏名・住所・連絡先）は data/sender.json で設定する。
  */
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
@@ -46,6 +49,22 @@ async function mapLimit(items, limit, fn) {
     })
   );
   return out;
+}
+
+/* ── 差出人情報 ──
+ * 送信元アドレスや会社名は data/sender.json で切り替える。
+ * デモサイト・診断レポート・メール本文のすべてに反映される。
+ */
+const SENDER = JSON.parse(
+  await readFile(arg('sender', 'data/sender.json'), 'utf8').catch(() => '{}')
+);
+if (!SENDER.email) {
+  console.error('✕ data/sender.json に email がありません。差出人情報を先に設定してください。');
+  process.exit(1);
+}
+if (/（住所/.test(SENDER.address || '')) {
+  console.warn('⚠ data/sender.json の address が未記入です。');
+  console.warn('  特定電子メール法で住所の記載は義務です。送信前に必ず埋めてください。\n');
 }
 
 /* ── メール下書き ── */
@@ -100,7 +119,7 @@ function buildEmail(p, diag, urls) {
 
 ${p.name} 御中
 
-突然のご連絡失礼いたします。株式会社秀の西と申します。
+突然のご連絡失礼いたします。${SENDER.company}の${SENDER.personShort || SENDER.person}と申します。
 
 小規模の店舗・会社さま向けに、ホームページを
 5ページ・15万円・7営業日で制作しています。
@@ -132,9 +151,9 @@ ${photoNote}※ 公開期限は ${EXPIRY} です。
 現状を伺えればと思います。
 
 ---
-株式会社秀　西 智也
-（住所を記載）
-配信停止・掲載停止のご連絡: nishi@nous-creators.com
+${SENDER.company}　${SENDER.person}
+${SENDER.address}
+配信停止・掲載停止のご連絡: ${SENDER.email}
 本メールの配信が不要な場合は、上記アドレスまでご返信ください。以後お送りいたしません。
 
 `;
@@ -158,12 +177,12 @@ const results = await mapLimit(prospects, 4, async (p) => {
 
   await writeFile(
     path.join(dir, 'index.html'),
-    renderDemo(p, diag, { expiry: EXPIRY }),
+    renderDemo(p, diag, { expiry: EXPIRY, sender: SENDER }),
     'utf8'
   );
   await writeFile(
     path.join(dir, 'report.html'),
-    renderReport(p, diag, { expiry: EXPIRY, demoPath: './' }),
+    renderReport(p, diag, { expiry: EXPIRY, demoPath: './', sender: SENDER }),
     'utf8'
   );
 

@@ -2,3 +2,4 @@ node_modules/
 dist/
 out/
 data/prospects.json
+data/sender.json

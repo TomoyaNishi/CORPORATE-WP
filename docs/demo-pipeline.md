@@ -11,8 +11,9 @@ URL を差し込んだメール下書きまで出力する。
 
 ```bash
 # 0. 差出人情報を設定（会社名・氏名・住所・連絡先）
-#    data/sender.json を編集する。住所は必ず埋めること
-vi data/sender.json
+#    住所を含むため、data/sender.json は git 管理外にしてある
+cp data/sender.sample.json data/sender.json
+vi data/sender.json   # address を必ず埋める
 
 # 1. 営業先リストを用意（サンプルをコピーして書き換える）
 cp data/prospects.sample.json data/prospects.json
@@ -45,6 +46,10 @@ dist/_headers             Cloudflare Pages 用 X-Robots-Tag
 out/emails.md             URL差し込み済みのメール下書き（目視確認用）
 out/queue.csv             配信ツール取り込み用（BOM付きUTF-8）
 ```
+
+`data/sender.json`（住所を含む）と `data/prospects.json`（営業先の連絡先）、
+`dist/` `out/` は `.gitignore` 済み。このリポジトリは公開されているため、
+個人情報・営業先情報をコミットしないこと。
 
 `dist/` `out/` `data/prospects.json` は営業先の情報を含むため git 管理外。
 
